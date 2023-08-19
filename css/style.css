@@ -1,0 +1,26 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  font-family: "Bebas Neue";
+  background-color: #faf4de;
+}
+
+section {
+  height: 100vh;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+svg {
+  overflow: visible;
+  width: 100%;
+}
+
+#text-path {
+  fill: #333;
+  font-size: 5rem;
+}

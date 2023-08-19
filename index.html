@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <link rel="stylesheet" href="./css/style.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans+JP:wght@200&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <section></section>
+
+    <section class="container">
+      <svg viewBox="0 0 1918 258" xmlns="http://www.w3.org/2000/svg">
+        <path
+          id="curve"
+          d="M0 129C150.167 32.1666 546.1 -103.4 928.5 129C1310.9 361.4 1747.17 225.833 1917.5 129"
+          fill="transparent"
+        />
+        <text>
+          <textPath id="text-path" href="#curve" startOffset="0">
+            Animate this text alonge the curve
+          </textPath>
+        </text>
+      </svg>
+    </section>
+
+    <section></section>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const textPath = document.getElementById("text-path");
+        const scrollSpeed = 2.5; // you can change this value to control the speed
+        const animationDirection = "right"; // you can change this value to "left" or "right"
+        const startPosition = -100; // you can change this value to set the starting pc
+
+        const updateTextPosition = () => {
+          const container = document.querySelector(".container");
+          const containerRect = container.getBoundingClientRect();
+          const windowHeight = window.innerHeight;
+
+          if (containerRect.top <= windowHeight && containerRect.bottom >= 0) {
+            const directionMultiplier = animationDirection === "left" ? 1 : -1;
+            const startOffset =
+              startPosition +
+              ((containerRect.top - windowHeight) /
+                (containerRect.height + windowHeight)) *
+                100 *
+                scrollSpeed *
+                directionMultiplier;
+            textPath.setAttribute("startOffset", startOffset + "%");
+          }
+        };
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                updateTextPosition();
+              }
+            });
+          },
+          { threshold: 0.1 }
+        );
+
+        observer.observe(textPath);
+
+        window.addEventListener("scroll", updateTextPosition);
+      });
+
+      const lenis = new Lenis();
+
+      lenis.on("scroll", (e) => {
+        console.log(e);
+      });
+
+      function raf(time) {
+        lenis.raf(time);
+        requestAnimationFrame(raf);
+      }
+
+      requestAnimationFrame(raf);
+    </script>
+  </body>
+</html>
